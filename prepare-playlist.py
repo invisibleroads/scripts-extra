@@ -25,6 +25,6 @@ if __name__ == '__main__':
         '~/Downloads/music-playlists/') + timestamp)
     argument_parser.add_argument('--source_folder', default=expanduser(
         '~/Storage/music-archives'))
-    argument_parser.add_argument('--sample_count', type=int, default=20)
+    argument_parser.add_argument('--sample_count', type=int, default=100)
     args = argument_parser.parse_args()
     run(args.target_folder, args.source_folder, args.sample_count)
