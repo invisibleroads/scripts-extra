@@ -28,15 +28,15 @@ def sort_photos(sourceFolder, targetFolder):
             try:
                 targetPath = get_targetPath(sourcePath)
             except DuplicateError as targetPath:
-                print template % (fileIndex, fileCount, 'Skipping', targetPath)
+                print(template % (fileIndex, fileCount, 'Skip', targetPath))
                 continue
             try:
                 os.makedirs(os.path.dirname(targetPath))
             except OSError:
                 pass
-            print template % (fileIndex, fileCount, 'Writing', targetPath)
+            print(template % (fileIndex, fileCount, 'Save', targetPath))
             shutil.copy2(sourcePath, targetPath)  # Preserve file attributes
-        print
+        print()
 
 
 def is_not_media(fileName):
