@@ -65,7 +65,7 @@ def get_target_path(source_path):
     while exists(target_path):
         if timestamp == get_timestamp(target_path):
             break
-        target_path = target_path_generator.next()
+        target_path = next(target_path_generator)
     return target_path
 
 
