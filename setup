@@ -1,0 +1,20 @@
+#!/bin/bash
+cd $(dirname "$0")
+
+SCRIPTS=~/.scripts
+if [ ! -e $SCRIPTS ]; then
+    mkdir $SCRIPTS
+fi
+
+for filename in .gvimrc
+do
+    cp $filename ~
+    echo 'cp '$filename ~
+done
+
+for filename in boot-windows disable-backlight refresh-assets *.py
+do
+    cp $filename $SCRIPTS
+    chmod a+x $SCRIPTS/$filename
+    echo 'cp '$filename $SCRIPTS
+done
