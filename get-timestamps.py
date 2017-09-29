@@ -21,7 +21,7 @@ if __name__ == '__main__':
     argument_parser.add_argument(
         '-i', '--interval_in_minutes', type=int, default=30)
     argument_parser.add_argument(
-        '-m', '--method', default='ceil')
+        '-m', '--method', default='floor')
     args = argument_parser.parse_args()
 
     timestamp1, timestamp2 = get_timestamps(
