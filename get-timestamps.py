@@ -16,7 +16,7 @@ def get_timestamps(interval_in_minutes=30):
 if __name__ == '__main__':
     argument_parser = ArgumentParser()
     argument_parser.add_argument(
-        '-i', '--interval_in_minutes', type=int, default=30)
+        'interval_in_minutes', nargs='?', type=int, default=30)
     args = argument_parser.parse_args()
 
     timestamp1, timestamp2 = get_timestamps(args.interval_in_minutes)
