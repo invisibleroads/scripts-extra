@@ -1,2 +1,2 @@
-set gfn=Monospace\ 14
+set gfn=Monospace\ 16
 colorscheme torte
