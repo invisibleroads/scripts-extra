@@ -5,12 +5,12 @@
 # TODO: Delete duplicates that are not in a folder
 # TODO: Stay in containing folder if timestamp is very different
 
-import datetime
 import os
 import shutil
 # import subprocess
 import sys
-from os.path import realpath
+from datetime import datetime
+from os.path import getmtime, realpath
 from PIL import Image
 from PIL.ExifTags import TAGS
 
@@ -71,14 +71,27 @@ def get_targetPath(sourcePath):
 
 def get_timestamp(path):
     try:
-        timestamp = get_timestamp_from_image(path)
-        try:
-            return datetime.datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
-        except ValueError:
-            return datetime.datetime.strptime(timestamp, '%d/%m/%Y %H:%M')
+        text = get_timestamp_from_image(path)
     except ImageError:
-        modificationTime = os.path.getmtime(path)
-        return datetime.datetime.fromtimestamp(modificationTime)
+        epoch_time_in_seconds = getmtime(path)
+        return datetime.fromtimestamp(epoch_time_in_seconds)
+
+    try:
+        return datetime.strptime(text, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        pass
+
+    try:
+        return datetime.strptime(text, '%Y:%m:%d %H:%M:%S')
+    except ValueError:
+        pass
+
+    try:
+        return datetime.strptime(text, '%d/%m/%Y %H:%M')
+    except ValueError:
+        pass
+
+    raise ValueError('could not parse %s' % text)
 
 
 def get_timestamp_from_image(path):

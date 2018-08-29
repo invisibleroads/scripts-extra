@@ -1,9 +1,9 @@
 #!/bin/env python
 "Arrange music in a YYYY/MM file structure."
-import datetime
 import re
 import sys
 from collections import defaultdict
+from datetime import datetime
 from invisibleroads_macros.disk import make_folder
 from invisibleroads_macros.log import format_path
 from os import walk
@@ -70,7 +70,8 @@ def get_target_path(source_path):
 
 
 def get_timestamp(path):
-    return datetime.datetime.fromtimestamp(getmtime(path))
+    epoch_time_in_seconds = getmtime(path)
+    return datetime.fromtimestamp(epoch_time_in_seconds)
 
 
 def is_same(source_path, target_path):
