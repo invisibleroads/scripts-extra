@@ -1,0 +1,7 @@
+#!/bin/bash
+cd $PROJECTS
+find . -type d -name .git | while read G_FOLDER; do
+    X_FOLDER=${G_FOLDER/\.git/}
+    cd $PROJECTS/$X_FOLDER
+    git pull
+done
