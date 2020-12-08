@@ -12,7 +12,7 @@ do
     echo 'cp '$filename ~
 done
 
-for filename in boot-windows clip-file disable-backlight disable-wakeup encrypt-password refresh-assets see-tree update-projects *.py
+for filename in boot-windows clip-file disable-backlight disable-wakeup encrypt-password rank-sizes refresh-assets see-tree update-projects *.py
 do
     cp $filename $SCRIPTS
     chmod a+x $SCRIPTS/$filename
