@@ -1,0 +1,17 @@
+TARGET_PATH=$(find . | shuf -n1)
+TARGET_NAME=$(basename "$TARGET_PATH")
+TARGET_EXTENSION=${TARGET_NAME##*.}
+
+case "$TARGET_EXTENSION" in
+    gif)
+        sxiv -afZ "$TARGET_PATH"
+        ;;
+    webm)
+        vlc -f "$TARGET_PATH"
+        ;;
+    *)
+        feh -FZ --recursive --start-at "$TARGET_PATH"
+        ;;
+esac
+
+echo $TARGET_PATH
