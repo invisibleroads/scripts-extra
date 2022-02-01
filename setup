@@ -50,8 +50,7 @@ source ~/.bashrc
 v
 pip install \
     ansible-lint \
-    black \
-    flakehell \
+    flake8 \
     pylama
 npm install -g \
     bash-language-server \
