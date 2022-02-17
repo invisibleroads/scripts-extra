@@ -66,4 +66,4 @@ command -v yamllint || sudo $X install yamllint -y
 mkdir ~/.config/bleachbit -p
 cp bleachbit.ini ~/.config/bleachbit
 
-dconf load / < gnome.properties
+command -v dconf && dconf load / < gnome.properties
