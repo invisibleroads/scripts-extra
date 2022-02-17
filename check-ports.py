@@ -1,3 +1,4 @@
+#!/bin/env python
 import socket
 from sys import argv
 
