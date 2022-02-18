@@ -58,8 +58,7 @@ npm install -g \
     fixjson \
     htmlhint \
     markdownlint \
-    stylelint stylelint-config-standard \
-    xo
+    stylelint stylelint-config-standard
 command -v hadolint || sudo $X install hadolint -y
 command -v yamllint || sudo $X install yamllint -y
 
