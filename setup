@@ -1,6 +1,6 @@
 #!/bin/bash
 CONFIGURATION_PATHS="
-.eslintrc
+.eslintrc.js
 .gvimrc
 "
 
