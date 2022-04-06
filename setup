@@ -12,10 +12,12 @@ check-ports.py
 clip-file
 disable-backlight
 disable-wakeup
+download-mp3
 encrypt-password
 prepare-playlist.py
 rank-sizes
 refresh-assets
+see-tasks
 see-tree
 sort-music.py
 sort-photos.py
