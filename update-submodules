@@ -1,0 +1,18 @@
+#!/bin/bash
+BRANCH_NAME=${1:-develop}
+
+update() {
+    git checkout $BRANCH_NAME
+    git pull
+    git remote prune origin
+}
+git submodule init
+git submodule update
+update
+
+find . -type f -name .git | while read G_FOLDER; do
+    X_FOLDER=${G_FOLDER/\.git/}
+    pushd $X_FOLDER
+    update
+    popd
+done
