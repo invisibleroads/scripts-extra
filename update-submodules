@@ -1,7 +1,15 @@
 #!/bin/bash
-BRANCH_NAME=${1:-develop}
-
 update() {
+    BRANCH_NAME=$(git branch --show-current)
+    if [ -z "$BRANCH_NAME" ]; then
+        BRANCH_NAME=$(git branch --list develop)
+        if [ -z "$BRANCH_NAME" ]; then
+            BRANCH_NAME=$(git branch --list master)
+            if [ -z "$BRANCH_NAME" ]; then
+                BRANCH_NAME=$(git branch --list main)
+            fi
+        fi
+    fi
     git checkout $BRANCH_NAME
     git pull
     git remote prune origin
@@ -12,7 +20,7 @@ update
 
 find . -type f -name .git | while read G_FOLDER; do
     X_FOLDER=${G_FOLDER/\.git/}
-    pushd $X_FOLDER
+    pushd $X_FOLDER > /dev/null
     update
-    popd
+    popd > /dev/null
 done
