@@ -35,7 +35,8 @@ def sort_photos(sourceFolder, targetFolder):
             except OSError:
                 pass
             print(template % (fileIndex, fileCount, 'Save', targetPath))
-            shutil.copy2(sourcePath, targetPath)  # Preserve file attributes
+            # shutil.copy2(sourcePath, targetPath)  # Preserve file attributes
+            shutil.move(sourcePath, targetPath)  # Preserve file attributes
         print()
 
 
