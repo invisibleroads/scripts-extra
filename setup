@@ -16,9 +16,7 @@ download-mp3
 encrypt-password
 prepare-playlist.py
 rank-sizes
-refresh-assets
 roll-dice*
-see-tasks
 see-tree
 sort-music.py
 sort-photos.py
