@@ -51,7 +51,7 @@ command -v npm || sudo $X install npm -y
 
 source ~/.bashrc
 v
-pip install \
+pip install -U \
     ansible-lint \
     flake8 \
     pylama
