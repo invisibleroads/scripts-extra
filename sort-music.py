@@ -1,4 +1,5 @@
 #!/bin/env python
+import csv
 import re
 import shutil
 import sys
@@ -30,7 +31,7 @@ def get_target_path(source_path):
     if matches:
         match = sorted(matches, key=lambda _: -_[0])[0]
         score, recording_id, title, artist = match
-        target_name = f'{artist} - {title} [score={score};size={size}]{suffix}'
+        target_name = f'{artist} - {title} [size={size};score={score}]{suffix}'
         paths_by_key[(artist, title)].add(target_name)
     if not matches or title is None or artist is None:
         source_stem = stamp_pattern.sub('', source_path.stem)
@@ -41,7 +42,7 @@ def get_target_path(source_path):
 
 environ['FPCALC'] = '/usr/bin/fpcalc'
 api_key = environ['ACOUSTID_KEY']
-stamp_pattern = re.compile(r' \[.*\]')
+stamp_pattern = re.compile(r' \[size=.*\]')
 paths_by_key = defaultdict(set)
 
 
@@ -52,5 +53,9 @@ if __name__ == '__main__':
     sort_music(source_folder, target_folder)
     key_count_packs = [(k, len(ps)) for k, ps in paths_by_key.items()]
     key_count_packs = sorted(key_count_packs, key=lambda _: -_[1])
-    for key, count in key_count_packs:
-        print(key, count)
+    summary_path = Path(target_folder) / 'tracks.csv'
+    with summary_path.open('wt') as f:
+        csv_writer = csv.writer(f)
+        for key, count in key_count_packs:
+            csv_writer.writerow([key[0], key[1], count])
+    print(f'summary_path = {summary_path}')
