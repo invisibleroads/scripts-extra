@@ -1,6 +1,7 @@
 #!/bin/env python
 "Arrange music in a YYYY/MM file structure."
 import re
+import shutil
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -10,7 +11,6 @@ from os import walk
 from os.path import (
     basename, dirname, exists, getmtime, getsize, join, realpath, relpath,
     splitext)
-from shutil import copy2
 
 
 BRACKET_PREFIX_PATTERN = re.compile(r'^\[.*?\]-')
@@ -48,7 +48,7 @@ def sort_music(source_folder, target_folder):
                 continue
             make_folder(dirname(target_path))
             progress.show(file_index, 'copy', target_path)
-            copy2(source_path, target_path)  # Preserve file attributes
+            shutil.move(source_path, target_path)
         if progress.file_count:
             print('')
     return dict(progress.count_by_message)
