@@ -1,97 +1,56 @@
 #!/bin/env python
-"Arrange music in a YYYY/MM file structure."
 import re
 import shutil
 import sys
 from collections import defaultdict
-from datetime import datetime
-from invisibleroads_macros.disk import make_folder
-from invisibleroads_macros.log import format_path
-from os import walk
-from os.path import (
-    basename, dirname, exists, getmtime, getsize, join, realpath, relpath,
-    splitext)
+from os import environ, walk
+from os.path import getsize, join, realpath
+from pathlib import Path
 
-
-BRACKET_PREFIX_PATTERN = re.compile(r'^\[.*?\]-')
-
-
-class Progress(object):
-
-    template = '%s/%s %s %s'
-    file_count = 0
-    count_by_message = defaultdict(int)
-
-    def show(self, file_index, message, target_path):
-        print(self.template % (
-            file_index, self.file_count, message,
-            format_path(relpath(target_path, target_folder))))
-        self.count_by_message[message] += 1
-
-
-class DuplicateError(Exception):
-    pass
+import acoustid
 
 
 def sort_music(source_folder, target_folder):
-    progress = Progress()
     for root_folder, folder_names, file_names in walk(source_folder):
-        progress.file_count = len(file_names)
         for file_index, file_name in enumerate(file_names, 1):
             source_path = join(root_folder, file_name)
             if not getsize(source_path):  # Skip empty files
                 continue
-            try:
-                target_path = get_target_path(source_path)
-            except DuplicateError as target_path:
-                progress.show(file_index, 'skip', str(target_path))
-                continue
-            make_folder(dirname(target_path))
-            progress.show(file_index, 'copy', target_path)
-            shutil.move(source_path, target_path)
-        if progress.file_count:
-            print('')
-    return dict(progress.count_by_message)
+            target_path = get_target_path(source_path)
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            # shutil.move(source_path, target_path)
+            shutil.copy2(source_path, target_path)
 
 
 def get_target_path(source_path):
-    timestamp = get_timestamp(source_path)
-    timestamp_folder = timestamp.strftime('%Y/%m')
-    target_name = BRACKET_PREFIX_PATTERN.sub('', basename(source_path)).strip()
-    target_path = join(target_folder, timestamp_folder, target_name)
-    if is_same(source_path, target_path):
-        raise DuplicateError(target_path)
-    target_path_generator = make_target_path_generator(target_path)
-    while exists(target_path):
-        if timestamp == get_timestamp(target_path):
-            break
-        target_path = next(target_path_generator)
-    return target_path
+    source_path = Path(source_path)
+    suffix = source_path.suffix
+    size = source_path.stat().st_size
+    matches = list(acoustid.match(api_key, source_path))
+    if matches:
+        match = sorted(matches, key=lambda _: -_[0])[0]
+        score, recording_id, title, artist = match
+        target_name = f'{artist} - {title} [score={score};size={size}]{suffix}'
+        paths_by_key[(artist, title)].add(target_name)
+    if not matches or title is None or artist is None:
+        source_stem = stamp_pattern.sub('', source_path.stem)
+        target_name = f'{source_stem} [size={size}]{suffix}'
+    print(target_name)
+    return Path(target_folder) / target_name
 
 
-def get_timestamp(path):
-    epoch_time_in_seconds = getmtime(path)
-    return datetime.fromtimestamp(epoch_time_in_seconds)
-
-
-def is_same(source_path, target_path):
-    if not exists(target_path):
-        return False
-    if getsize(source_path) != getsize(target_path):
-        return False
-    return True
-
-
-def make_target_path_generator(target_path):
-    target_base, target_extension = splitext(target_path)
-    target_index = 0
-    while True:
-        yield '%s-%s%s' % (target_base, target_index, target_extension)
-        target_index += 1
+environ['FPCALC'] = '/usr/bin/fpcalc'
+api_key = environ['ACOUSTID_KEY']
+stamp_pattern = re.compile(r' \[.*\]')
+paths_by_key = defaultdict(set)
 
 
 if __name__ == '__main__':
     source_folder, target_folder = sys.argv[1:]
     if realpath(source_folder) == realpath(target_folder):
         sys.exit('Source and target folders must be different')
-    print(sort_music(source_folder, target_folder))
+    sort_music(source_folder, target_folder)
+    key_count_packs = [(k, len(ps)) for k, ps in paths_by_key.items()]
+    key_count_packs = sorted(key_count_packs, key=lambda _: -_[1])
+    for key, count in key_count_packs:
+        print(key, count)
