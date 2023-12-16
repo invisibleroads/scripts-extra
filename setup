@@ -43,8 +43,10 @@ done
 
 if command -v dnf; then
     X=dnf
-else
+elif command -v apt; then
     X=apt
+elif command -v brew; then
+    X=brew
 fi
 command -v node || sudo $X install node -y
 command -v npm || sudo $X install npm -y
@@ -64,7 +66,7 @@ npm install -g \
 command -v hadolint || sudo $X install hadolint -y
 command -v yamllint || sudo $X install yamllint -y
 
-mkdir ~/.config/bleachbit -p
+mkdir -p ~/.config/bleachbit
 cp bleachbit.ini ~/.config/bleachbit
 
 command -v dconf && dconf load / < gnome.properties
