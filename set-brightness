@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo Please specify a brightness as an integer value.
+else
+    sudo sh -c "echo $1 > /sys/class/backlight/intel_backlight/brightness"
+fi

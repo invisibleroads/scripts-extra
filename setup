@@ -18,6 +18,7 @@ prepare-playlist.py
 rank-sizes
 roll-dice*
 see-tree
+set-brightness
 sort-music.py
 sort-photos.py
 update-submodules
