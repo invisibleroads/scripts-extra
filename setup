@@ -8,6 +8,7 @@ SCRIPT_PATHS="
 bleach
 boot-windows
 browse-photos
+check-battery
 check-ports.py
 clip-file
 disable-backlight
