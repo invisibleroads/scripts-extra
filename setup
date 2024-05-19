@@ -73,3 +73,5 @@ mkdir -p ~/.config/bleachbit
 cp bleachbit.ini ~/.config/bleachbit
 
 command -v dconf && dconf load / < gnome.properties
+
+echo ok
