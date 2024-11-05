@@ -27,7 +27,10 @@ def get_target_path(source_path):
     source_path = Path(source_path)
     suffix = source_path.suffix
     size = source_path.stat().st_size
-    matches = list(acoustid.match(api_key, source_path))
+    try:
+        matches = list(acoustid.match(api_key, source_path))
+    except acoustid.FingerprintGenerationError:
+        matches = []
     if matches:
         match = sorted(matches, key=lambda _: -_[0])[0]
         score, recording_id, title, artist = match
