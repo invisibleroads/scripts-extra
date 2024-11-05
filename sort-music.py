@@ -19,8 +19,8 @@ def sort_music(source_folder, target_folder):
                 continue
             target_path = get_target_path(source_path)
             target_path.parent.mkdir(parents=True, exist_ok=True)
-            # shutil.move(source_path, target_path)
-            shutil.copy2(source_path, target_path)
+            shutil.move(source_path, target_path)
+            # shutil.copy2(source_path, target_path)
 
 
 def get_target_path(source_path):
@@ -37,7 +37,7 @@ def get_target_path(source_path):
         source_stem = stamp_pattern.sub('', source_path.stem)
         target_name = f'{source_stem} [size={size}]{suffix}'
     print(target_name)
-    return Path(target_folder) / target_name
+    return Path(target_folder) / target_name.replace('/', '-')
 
 
 environ['FPCALC'] = '/usr/bin/fpcalc'
