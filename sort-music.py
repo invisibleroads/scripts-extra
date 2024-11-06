@@ -26,15 +26,16 @@ def sort_music(source_folder, target_folder):
 def get_target_path(source_path):
     source_path = Path(source_path)
     suffix = source_path.suffix
+    assert len(suffix) < 6
     size = source_path.stat().st_size
-    try:
-        matches = list(acoustid.match(api_key, source_path))
-    except acoustid.FingerprintGenerationError:
-        matches = []
+    matches = get_matches(source_path)
     if matches:
         match = sorted(matches, key=lambda _: -_[0])[0]
         score, recording_id, title, artist = match
-        target_name = f'{artist} - {title} [size={size};score={score}]{suffix}'
+        target_name = (
+            f'{format_artist(artist)} - '
+            f'{format_title(title)} '
+            f'[size={size};score={score:.5f}]{suffix}')
         paths_by_key[(artist, title)].add(target_name)
     if not matches or title is None or artist is None:
         source_stem = stamp_pattern.sub('', source_path.stem)
@@ -43,22 +44,55 @@ def get_target_path(source_path):
     return Path(target_folder) / target_name.replace('/', '-')
 
 
+def get_matches(source_path):
+    while True:
+        try:
+            matches = list(acoustid.match(api_key, source_path))
+        except (
+            acoustid.WebServiceError,
+            acoustid.FingerprintGenerationError,
+        ) as e:
+            print(f'{e} ! {source_path}')
+            matches = []
+            break
+        except OSError as e:
+            sys.exit(e)
+        else:
+            break
+    return matches
+
+
+def format_artist(x):
+    return x[:MAXIMUM_ARTIST_LENGTH].strip() if x else 'UNKNOWN'
+
+
+def format_title(x):
+    return x[:MAXIMUM_TITLE_LENGTH].strip() if x else 'UNKNOWN'
+
+
 environ['FPCALC'] = '/usr/bin/fpcalc'
 api_key = environ['ACOUSTID_KEY']
 stamp_pattern = re.compile(r' \[size=.*\]')
 paths_by_key = defaultdict(set)
 
 
+MAXIMUM_ARTIST_LENGTH = 64
+MAXIMUM_TITLE_LENGTH = 128
+
+
 if __name__ == '__main__':
     source_folder, target_folder = sys.argv[1:]
     if realpath(source_folder) == realpath(target_folder):
         sys.exit('Source and target folders must be different')
-    sort_music(source_folder, target_folder)
+    try:
+        sort_music(source_folder, target_folder)
+    except KeyboardInterrupt:
+        pass
     key_count_packs = [(k, len(ps)) for k, ps in paths_by_key.items()]
     key_count_packs = sorted(key_count_packs, key=lambda _: -_[1])
     summary_path = Path(target_folder) / 'tracks.csv'
-    with summary_path.open('wt') as f:
+    with summary_path.open('at') as f:
         csv_writer = csv.writer(f)
         for key, count in key_count_packs:
             csv_writer.writerow([key[0], key[1], count])
-    print(f'summary_path = {summary_path}')
+    print(f'\nsummary_path = {summary_path}')

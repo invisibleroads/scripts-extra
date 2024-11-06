@@ -22,6 +22,7 @@ sp
 see-tree
 set-brightness
 sort-music.py
+sort-music.sh
 sort-photos.py
 update-submodules
 "
