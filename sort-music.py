@@ -18,17 +18,22 @@ def sort_music(source_folder, target_folder):
             if not getsize(source_path):  # Skip empty files
                 continue
             target_path = get_target_path(source_path)
+            print(f'{target_path=}')
             target_path.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(source_path, target_path)
             # shutil.copy2(source_path, target_path)
+            print()
 
 
 def get_target_path(source_path):
     source_path = Path(source_path)
-    suffix = source_path.suffix
+    print(f'{source_path=}')
+    suffix = source_path.suffix.lower()
     assert len(suffix) < 6
     size = source_path.stat().st_size
     matches = get_matches(source_path)
+    for score, recording_id, title, artist in matches:
+        print(f'{score}\t{recording_id}\t{title}\t{artist}')
     if matches:
         match = sorted(matches, key=lambda _: -_[0])[0]
         score, recording_id, title, artist = match
