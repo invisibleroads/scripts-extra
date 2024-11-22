@@ -1,9 +1,10 @@
+#!/usr/bin/env python
 import datetime
 import shutil
 from argparse import ArgumentParser
 from invisibleroads_macros.disk import make_folder
 from os import walk
-from os.path import expanduser, join
+from os.path import expanduser, join, splitext
 from random import sample
 
 
@@ -13,9 +14,12 @@ def run(target_folder, source_folder, sample_count):
         for file_name in file_names:
             source_paths.append(join(root_folder, file_name))
     make_folder(target_folder)
-    for source_path in sample(source_paths, sample_count):
+    for source_index, source_path in enumerate(sample(
+            source_paths, sample_count)):
         print(source_path)
-        shutil.copy2(source_path, target_folder)
+        source_extension = splitext(source_path)[1]
+        shutil.copy2(source_path, join(
+            target_folder, f'{source_index}{source_extension}'))
 
 
 if __name__ == '__main__':
