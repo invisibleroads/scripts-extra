@@ -5,26 +5,7 @@ CONFIGURATION_PATHS="
 "
 
 SCRIPT_PATHS="
-bleach
-boot-windows
-browse-photos
-check-battery
-check-ports.py
-clip-file
-disable-backlight
-disable-wakeup
-download-mp3
-encrypt-password
-prepare-playlist.py
-rank-sizes
-roll-dice*
-sp
-see-tree
-set-brightness
-sort-music.py
-sort-music.sh
-sort-photos.py
-update-submodules
+roll-dice
 "
 
 SCRIPTS_FOLDER=~/.scripts
@@ -52,7 +33,6 @@ elif command -v apt; then
 elif command -v brew; then
     X=brew
 fi
-command -v node || sudo $X install node -y
 command -v npm || sudo $X install npm -y
 
 source ~/.bashrc
@@ -69,10 +49,5 @@ npm install -g \
     stylelint stylelint-config-standard
 command -v hadolint || sudo $X install hadolint -y
 command -v yamllint || sudo $X install yamllint -y
-
-mkdir -p ~/.config/bleachbit
-cp bleachbit.ini ~/.config/bleachbit
-
-command -v dconf && dconf load / < gnome.properties
 
 echo ok

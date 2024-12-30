@@ -1,0 +1,29 @@
+#!/bin/bash
+SCRIPT_PATHS="
+bleach
+boot-windows
+browse-photos
+check-battery
+check-ports.py
+clip-file
+disable-backlight
+disable-wakeup
+download-mp3
+encrypt-password
+prepare-playlist.py
+rank-sizes
+sp
+see-tree
+set-brightness
+sort-music.py
+sort-music.sh
+sort-photos.py
+update-submodules
+"
+
+mkdir -p ~/.config/bleachbit
+cp bleachbit.ini ~/.config/bleachbit
+
+command -v dconf && dconf load / < gnome.properties
+
+echo ok
