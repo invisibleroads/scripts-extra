@@ -6,6 +6,8 @@ browse-photos
 check-battery
 check-ports.py
 clip-file
+clip-ip
+clip-key
 disable-backlight
 disable-wakeup
 download-mp3
@@ -20,6 +22,19 @@ sort-music.sh
 sort-photos.py
 update-submodules
 "
+
+SCRIPTS_FOLDER=~/.scripts
+if [ ! -e $SCRIPTS_FOLDER ]; then
+    mkdir $SCRIPTS_FOLDER
+fi
+
+cd $(dirname "$0")
+
+for X in $SCRIPT_PATHS; do
+    cp $X $SCRIPTS_FOLDER
+    chmod a+x $SCRIPTS_FOLDER/$X
+    echo 'cp '$X $SCRIPTS_FOLDER
+done
 
 mkdir -p ~/.config/bleachbit
 cp bleachbit.ini ~/.config/bleachbit
