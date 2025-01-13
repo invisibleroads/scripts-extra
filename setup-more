@@ -36,6 +36,15 @@ for X in $SCRIPT_PATHS; do
     echo 'cp '$X $SCRIPTS_FOLDER
 done
 
+if command -v dnf; then
+    X=dnf
+elif command -v apt; then
+    X=apt
+elif command -v brew; then
+    X=brew
+fi
+command -v gvim || sudo $X install vim-X11 -y
+
 mkdir -p ~/.config/bleachbit
 cp bleachbit.ini ~/.config/bleachbit
 
