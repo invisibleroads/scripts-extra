@@ -39,8 +39,7 @@ source ~/.bashrc
 v
 pip install -U \
     ansible-lint \
-    flake8 \
-    pylama
+    ruff
 npm install -g \
     bash-language-server \
     fixjson \
