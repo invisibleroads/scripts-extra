@@ -1,2 +1,9 @@
+line-length = 79
+target-version = "py310"
+
+[lint]
+select = ["ALL"]
+ignore = ["Q000"]
+
 [format]
 quote-style = "single"
