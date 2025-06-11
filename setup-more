@@ -45,6 +45,12 @@ elif command -v brew; then
 fi
 command -v gvim || sudo $X install vim-X11 -y
 
+source ~/.bashrc
+v
+pip install -U \
+    ansible-lint
+command -v hadolint || sudo $X install hadolint -y
+
 mkdir -p ~/.config/bleachbit
 cp bleachbit.ini ~/.config/bleachbit
 

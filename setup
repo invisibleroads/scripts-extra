@@ -42,7 +42,6 @@ command -v npm || sudo $X install npm -y
 source ~/.bashrc
 v
 pip install -U \
-    ansible-lint \
     ruff
 npm install -g \
     bash-language-server \
@@ -50,7 +49,6 @@ npm install -g \
     htmlhint \
     markdownlint \
     stylelint stylelint-config-standard
-command -v hadolint || sudo $X install hadolint -y
 command -v yamllint || sudo $X install yamllint -y
 
 echo ok
