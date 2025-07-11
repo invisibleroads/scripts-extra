@@ -6,6 +6,7 @@ CONFIGURATION_PATHS="
 .eslintrc.js
 .gvimrc
 .ruff.toml
+.stylelintrc.js
 "
 SCRIPT_PATHS="
 clean-notebooks
