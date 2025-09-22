@@ -43,13 +43,13 @@ command -v npm || sudo $X install npm -y
 source ~/.bashrc
 v
 pip install -U \
-    ruff
+    ruff \
+    yamllint
 npm install -g \
     bash-language-server \
     fixjson \
     htmlhint \
     markdownlint \
     stylelint stylelint-config-standard
-command -v yamllint || sudo $X install yamllint -y
 
 echo ok
