@@ -1,4 +1,4 @@
 #!/bin/bash
-command -v podman || podman system prune --all --force && podman rmi --all
+command -v podman > /dev/null || podman system prune --all --force && podman rmi --all
 rm -rf ~/.cache ~/.npm
 bleachbit --preset --clean
