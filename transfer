@@ -1,0 +1,31 @@
+#!/bin/bash
+if [[ -z "$REMOTE_USER" ]]; then
+    echo REMOTE_USER is undefined.
+    HAS_ERROR=1
+fi
+
+if [[ -z "$REMOTE_HOST" ]]; then
+    echo REMOTE_HOST is undefined.
+    HAS_ERROR=1
+fi
+
+if [[ -z "$REMOTE_PATH" ]]; then
+    echo REMOTE_PATH is undefined.
+    HAS_ERROR=1
+fi
+
+ARGUMENT=${1^^}
+if [ "$ARGUMENT" == "DOWNLOAD" ]; then
+    COMMAND="rsync -avzP $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH ."
+elif [ "$ARGUMENT" == "UPLOAD" ]; then
+    COMMAND="rsync -avzP . $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
+else
+    echo DOWNLOAD/UPLOAD is undefined.
+    HAS_ERROR=1
+fi
+
+if [[ "$HAS_ERROR" == 1 ]]; then
+    echo Usage: REMOTE_USER=A REMOTE_HOST=B REMOTE_PATH=C transfer [DOWNLOAD/UPLOAD]
+else
+    eval "$COMMAND"
+fi
