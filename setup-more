@@ -1,4 +1,6 @@
 #!/bin/bash
+command -v dconf > /dev/null && dconf load / < gnome.properties
+
 SCRIPT_PATHS="
 bleach
 boot-windows
@@ -52,9 +54,10 @@ pip install -U \
     ansible-lint
 command -v hadolint || sudo $X install hadolint -y
 
-mkdir -p ~/.config/bleachbit
+mkdir ~/.config/bleachbit -p
 cp bleachbit.ini ~/.config/bleachbit
 
-command -v dconf && dconf load / < gnome.properties
+mkdir ~/.config/fontconfig -p
+cp fonts.conf ~/.config/fontconfig
 
 echo ok
