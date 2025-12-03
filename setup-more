@@ -1,6 +1,10 @@
 #!/bin/bash
 command -v dconf > /dev/null && dconf load / < gnome.properties
 
+CONFIGURATION_FOLDERS="
+.Xmodmap
+"
+
 SCRIPT_PATHS="
 bleach
 boot-windows
@@ -32,6 +36,11 @@ if [ ! -e $SCRIPTS_FOLDER ]; then
 fi
 
 cd $(dirname "$0")
+
+for X in $CONFIGURATION_PATHS; do
+    cp $X ~
+    echo 'cp '$X ~
+done
 
 for X in $SCRIPT_PATHS; do
     cp $X $SCRIPTS_FOLDER
