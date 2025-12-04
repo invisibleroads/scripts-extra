@@ -55,6 +55,7 @@ elif command -v apt; then
 elif command -v brew; then
     X=brew
 fi
+command -v xmodmap || sudo $X install xmodmap -y
 command -v gvim || sudo $X install vim-X11 -y
 
 source ~/.bashrc
