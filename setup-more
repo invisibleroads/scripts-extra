@@ -14,6 +14,7 @@ disable-backlight
 disable-wakeup
 download-mp3
 encrypt-password
+gif
 prepare-playlist.py
 rank-sizes
 sp
