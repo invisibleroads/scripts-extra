@@ -4,7 +4,7 @@ command -v dconf > /dev/null && dconf load / < gnome.properties
 SCRIPT_PATHS="
 bleach
 boot-windows
-browse-photos
+browse-media
 check-battery
 check-ports.py
 clip-file
@@ -48,7 +48,7 @@ elif command -v brew; then
     X=brew
 fi
 # command -v xmodmap || sudo $X install xmodmap -y
-command -v gvim || sudo $X install vim-X11 -y
+# command -v gvim || sudo $X install vim-X11 -y
 
 source ~/.bashrc
 v

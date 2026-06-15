@@ -1,0 +1,9 @@
+if ! command -v google-chrome &> /dev/null; then
+    sudo dnf install -y fedora-workstation-repositories
+    sudo dnf config-manager setopt google-chrome.enabled=1
+    sudo dnf install -y google-chrome-stable
+fi
+mkdir ~/.local/share/applications/ -p
+cp /usr/share/applications/google-chrome.desktop ~/.local/share/applications/
+sed -i 's|/usr/bin/google-chrome-stable|/usr/bin/google-chrome-stable --disk-cache-dir=/tmp/chrome-cache --disk-cache-size=500000000|g' ~/.local/share/applications/google-chrome.desktop
+update-desktop-database ~/.local/share/applications/
