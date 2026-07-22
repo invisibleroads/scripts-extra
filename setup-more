@@ -1,6 +1,10 @@
 #!/bin/bash
 command -v dconf > /dev/null && dconf load / < gnome.properties
 
+CONFIGURATION_PATHS="
+.eslintrc.js
+.stylelintrc.js
+"
 SCRIPT_PATHS="
 bleach
 boot-windows
@@ -34,10 +38,13 @@ fi
 
 cd $(dirname "$0")
 
+for X in $CONFIGURATION_PATHS; do
+    cp $X ~ -r
+done
+
 for X in $SCRIPT_PATHS; do
     cp $X $SCRIPTS_FOLDER
     chmod a+x $SCRIPTS_FOLDER/$X
-    echo 'cp '$X $SCRIPTS_FOLDER
 done
 
 if command -v dnf; then
@@ -47,14 +54,19 @@ elif command -v apt; then
 elif command -v brew; then
     X=brew
 fi
-# command -v xmodmap || sudo $X install xmodmap -y
-# command -v gvim || sudo $X install vim-X11 -y
+command -v npm || sudo $X install npm -y
+command -v shellcheck || sudo $X install shellcheck -y
+command -v hadolint || sudo $X install hadolint -y
 
 source ~/.bashrc
 v
 pip install -U \
-    ansible-lint
-command -v hadolint || sudo $X install hadolint -y
+    ansible-lint \
+    yamllint
+npm install -g \
+    @biomejs/biome \
+    htmlhint \
+    markdownlint-cli2
 
 mkdir ~/.config/bleachbit -p
 cp bleachbit.ini ~/.config/bleachbit

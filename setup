@@ -1,12 +1,7 @@
 #!/bin/bash
-CONFIGURATION_FOLDERS="
-.jupyter
-"
 CONFIGURATION_PATHS="
-.eslintrc.js
-.gvimrc
+.jupyter
 .ruff.toml
-.stylelintrc.js
 "
 SCRIPT_PATHS="
 clean-notebooks
@@ -21,14 +16,12 @@ fi
 cd $(dirname "$0")
 
 for X in $CONFIGURATION_PATHS; do
-    cp $X ~
-    echo 'cp '$X ~
+    cp $X ~ -r
 done
 
 for X in $SCRIPT_PATHS; do
     cp $X $SCRIPTS_FOLDER
     chmod a+x $SCRIPTS_FOLDER/$X
-    echo 'cp '$X $SCRIPTS_FOLDER
 done
 
 if command -v dnf; then
@@ -38,18 +31,10 @@ elif command -v apt; then
 elif command -v brew; then
     X=brew
 fi
-command -v npm || sudo $X install npm -y
 
 source ~/.bashrc
 v
 pip install -U \
-    ruff \
-    yamllint
-npm install -g \
-    bash-language-server \
-    fixjson \
-    htmlhint \
-    markdownlint \
-    stylelint stylelint-config-standard
+    ruff
 
 echo ok
