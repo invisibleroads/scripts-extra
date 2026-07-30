@@ -16,9 +16,9 @@ fi
 
 ARGUMENT=${1^^}
 if [ "$ARGUMENT" == "DOWNLOAD" ]; then
-    COMMAND="rsync -avzP $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH ."
+    COMMAND='rsync -avzP $REMOTE_USER@$REMOTE_HOST:"$REMOTE_PATH" .'
 elif [ "$ARGUMENT" == "UPLOAD" ]; then
-    COMMAND="rsync -avzP . $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
+    COMMAND='rsync -avzP . $REMOTE_USER@$REMOTE_HOST:"$REMOTE_PATH"'
 else
     echo DOWNLOAD/UPLOAD is undefined.
     HAS_ERROR=1
