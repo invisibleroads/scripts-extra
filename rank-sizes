@@ -1,1 +1,1 @@
-du -d 1 . | sort -n -r | head
+du -h -d 1 . | sort -hr | head
