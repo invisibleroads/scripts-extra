@@ -1,1 +1,1 @@
-yt-dlp --js-runtimes node -x --audio-format mp3 "$1"
+yt-dlp --remote-components ejs:github -x --audio-format mp3 "$1"
